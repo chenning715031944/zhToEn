@@ -3,10 +3,12 @@ package com.liudaxia.util;
 import java.io.File;
 
 import org.liudaxia.vo.InsertSql;
+import org.liudaxia.vo.UpdateSql;
 
 /*
  * 
  * 通过读取excel获取sql语句
+ * excel应该为xls兼容的不支持xlsx
  */
 public class GenerateSql {
 	
@@ -50,7 +52,42 @@ public class GenerateSql {
 		
 	}
 	
+	/**
+	 * 根据excel生成用于更新的sql语句
+	 * @param excelPath
+	 *
+	 * @throws Exception 
+	 */
+	public static  void generateUpdateSql(String excelPath) throws Exception{
+		File file = new File(excelPath);
+		StringBuilder sb =null;
+		
+		ExcelObject<UpdateSql> readExcel = ExcelUtil.readExcel(file, UpdateSql.class);
+		
+		for(UpdateSql updateSql : readExcel.getDataList()){
+			String en = updateSql.getEn();
+			if(en==null||"".equals(en)){
+				continue;
+			}
+			
+			//update SYS_DYYZYWJ set XSZ='教学目的：' where id= 'jsp.kc.kckcb.show_center.jxmd' and YYLX='zh_CN'
+			sb = new StringBuilder();
+			sb.append("update SYS_DYYZYWJ set XSZ='").append(en).append("' ")
+			.append("where id = '").append(updateSql.getId()).append("' ").append("and YYLX='en_US';");
+			
+			System.out.println(sb.toString());
+			
+		}
+		
+		
+	}
+	
 	public static void main(String[] args) throws Exception {
+		String path = "C:\\Users\\liudaxia\\Desktop\\研究生自助打印成绩单需要翻译的内容.xls";
+		generateUpdateSql(path);
+	}
+	
+	public static void main1(String[] args) throws Exception {
 		String ywlb = "研究生自助打印";
 		getInsertSql("C:\\Users\\liudaxia\\Desktop\\研究生自助打印成绩单需要翻译的内容.xls",ywlb);
 	}
