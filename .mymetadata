@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="zhToEn"
+  id="myeclipse.1484210011839"
+  context-root="/zhToEn"
+  j2ee-spec="5.0"
+  archive="zhToEn.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
