@@ -22,10 +22,16 @@ public class GenerateSql {
 		
 		File file = new File(path);
 		StringBuilder sb =null;
+		StringBuilder errorInfo = new StringBuilder();
 		
 		ExcelObject<InsertSql> readExcel = ExcelUtil.readExcel(file, InsertSql.class);
 		//打印出中文版的insert语句
 		for(InsertSql insertSql :readExcel.getDataList()){
+			
+			if(insertSql.getId()==null||"".equals(insertSql.getId())||"null".equals(insertSql.getId())){
+				errorInfo.append(insertSql.getZh()).append(",");
+				continue;
+			}
 			
 			sb = new StringBuilder();
 			//insert into SYS_DYYZYWJ values('jsp.cjddyb.v_zzfw_zzdy_yjsdysq_yjs.sqyybncgwszf','zh_CN','申请原因不能超过50个字符!','','','','研究生自助打印','','','','');
@@ -34,11 +40,15 @@ public class GenerateSql {
 			.append(insertSql.getZh()).append("','','','','").append(ywlb).append("','','','','');");
 			
 			System.out.println(sb.toString());
+			
 		}
 		
 		
 		//打印出英文版的insert语句
 				for(InsertSql insertSql :readExcel.getDataList()){
+					if(insertSql.getId()==null||"".equals(insertSql.getId())||"null".equals(insertSql.getId())){
+						continue;
+					}
 				
 					//insert into SYS_DYYZYWJ values('jsp.cjddyb.v_zzfw_zzdy_yjsdysq_yjs.sqzt','en_US','申请状态','','是','','研究生自助打印','','','','');
 					sb = new StringBuilder();
@@ -49,6 +59,8 @@ public class GenerateSql {
 					
 					System.out.println(sb.toString());
 				}
+				
+				System.err.println(errorInfo.toString()+"没有Id");
 		
 	}
 	
@@ -82,13 +94,31 @@ public class GenerateSql {
 		
 	}
 	
-	public static void main(String[] args) throws Exception {
+	
+	/**
+	 * 研究生自助打印
+	 * @param args
+	 * @throws Exception
+	 */
+	
+	public static void main1(String[] args) throws Exception {
 		String path = "C:\\Users\\liudaxia\\Desktop\\研究生自助打印成绩单需要翻译的内容.xls";
 		generateUpdateSql(path);
 	}
 	
-	public static void main1(String[] args) throws Exception {
+	public static void main2(String[] args) throws Exception {
 		String ywlb = "研究生自助打印";
 		getInsertSql("C:\\Users\\liudaxia\\Desktop\\研究生自助打印成绩单需要翻译的内容.xls",ywlb);
 	}
+	
+	
+	/**
+	 * 在读证明需要翻译的内容
+	 */
+	
+	public static void main(String[] args) throws Exception {
+		String ywlb = "研究生在读证明";
+		getInsertSql("C:\\Users\\liudaxia\\Desktop\\研究生自助打印成绩单需要翻译的内容.xls",ywlb);
+	}
+	
 }
